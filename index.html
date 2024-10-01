@@ -1,11 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cardápio Digital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .menu-item {
+            background-color: #fff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item h3 {
+            margin: 0;
+        }
+
+        .menu-item p {
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .checkout {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .checkout button {
+            background-color: #007bff;
+        }
+
+        .checkout button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    
+
+<div class="container">
+    <h1>Cardápio Digital</h1>
+
+    <div class="menu-item">
+        <div>
+            <h3>Salada Caprese</h3>
+            <p>Tomate, mozzarella de búfala e manjericão fresco.</p>
+        </div>
+        <div>
+            <span class="price">R$ 20,00</span>
+            <button onclick="addItem('Salada Caprese', 20)">Selecionar</button>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <div>
+            <h3>Bruschetta de Tomate</h3>
+            <p>Pão tostado com tomate, alho e manjericão.</p>
+        </div>
+        <div>
+            <span class="price">R$ 15,00</span>
+            <button onclick="addItem('Bruschetta de Tomate', 15)">Selecionar</button>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <div>
+            <h3>Filé de Peixe ao Limão</h3>
+            <p>Filé de peixe grelhado com molho de limão.</p>
+        </div>
+        <div>
+            <span class="price">R$ 35,00</span>
+            <button onclick="addItem('Filé de Peixe ao Limão', 35)">Selecionar</button>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <div>
+            <h3>Lasanha de Carne</h3>
+            <p>Lasanha com molho à bolonhesa.</p>
+        </div>
+        <div>
+            <span class="price">R$ 30,00</span>
+            <button onclick="addItem('Lasanha de Carne', 30)">Selecionar</button>
+        </div>
+    </div>
+
+    <div class="checkout">
+        <button onclick="sendOrder()">Finalizar Pedido</button>
+    </div>
+</div>
+
+<script>
+    let selectedItems = [];
+
+    function addItem(itemName, itemPrice) {
+        selectedItems.push({ name: itemName, price: itemPrice });
+        alert(`${itemName} adicionado ao pedido!`);
+    }
+
+    function sendOrder() {
+        if (selectedItems.length === 0) {
+            alert("Você ainda não selecionou nenhum item!");
+            return;
+        }
+
+        let orderText = "Pedido: \n";
+        let totalPrice = 0;
+
+        selectedItems.forEach(item => {
+            orderText += `${item.name} - R$ ${item.price.toFixed(2)}\n`;
+            totalPrice += item.price;
+        });
+
+        orderText += `\nTotal: R$ ${totalPrice.toFixed(2)}`;
+
+        const whatsappLink = `https://wa.me/SEU_NUMERO_DE_WHATSAPP?text=${encodeURIComponent(orderText)}`;
+        window.open(whatsappLink, '_blank');
+    }
+</script>
+
 </body>
 </html>
+
