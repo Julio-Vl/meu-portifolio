@@ -1,12 +1,36 @@
-let selectedItems = [];
+let selectedItems = {};
+
+function updateQuantity(itemName, change) {
+    if (!selectedItems[itemName]) {
+        selectedItems[itemName] = { name: itemName, price: 0, quantity: 0 };
+    }
+
+    const item = selectedItems[itemName];
+    item.quantity += change;
+
+    if (item.quantity < 0) {
+        item.quantity = 0; // Evitar números negativos
+    }
+
+    document.getElementById(`quantity-${itemName}`).textContent = item.quantity;
+}
 
 function addItem(itemName, itemPrice) {
-    selectedItems.push({ name: itemName, price: itemPrice });
-    alert(`${itemName} adicionado ao pedido!`);
+    const item = selectedItems[itemName];
+
+    if (!item || item.quantity === 0) {
+        alert(`Selecione a quantidade de ${itemName}!`);
+        return;
+    }
+
+    item.price = itemPrice;
+    alert(`${itemName} adicionado ao pedido! Quantidade: ${item.quantity}`);
 }
 
 function sendOrder() {
-    if (selectedItems.length === 0) {
+    const orderItems = Object.values(selectedItems).filter(item => item.quantity > 0);
+
+    if (orderItems.length === 0) {
         alert("Você ainda não selecionou nenhum item!");
         return;
     }
@@ -14,9 +38,9 @@ function sendOrder() {
     let orderText = "Pedido: \n";
     let totalPrice = 0;
 
-    selectedItems.forEach(item => {
-        orderText += `${item.name} - R$ ${item.price.toFixed(2)}\n`;
-        totalPrice += item.price;
+    orderItems.forEach(item => {
+        orderText += `${item.name} - Quantidade: ${item.quantity} - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+        totalPrice += item.price * item.quantity;
     });
 
     orderText += `\nTotal: R$ ${totalPrice.toFixed(2)}`;
